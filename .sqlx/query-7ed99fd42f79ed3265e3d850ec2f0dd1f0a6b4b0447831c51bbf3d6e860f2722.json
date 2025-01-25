@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE teams SET enabled = NOT enabled WHERE id = $1",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "7ed99fd42f79ed3265e3d850ec2f0dd1f0a6b4b0447831c51bbf3d6e860f2722"
+}

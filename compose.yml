@@ -1,0 +1,111 @@
+services:
+  preview:
+    build: .
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - S3_BUCKET=ical
+      - S3_KEY=football
+    ports:
+      - "8080:8080"
+  
+  web:
+    build:
+      dockerfile: Dockerfile.web
+    environment:
+      - API_ORIGIN=http://server:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+
+  server:
+    build:
+      dockerfile: Dockerfile.server
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - S3_BUCKET=ical
+      - S3_KEY=football
+      - S3_ENDPOINT=http://s3:9000
+      - AWS_ACCESS_KEY_ID=admin
+      - AWS_SECRET_ACCESS_KEY=minio123
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      s3:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  s3:
+    image: quay.io/minio/minio:latest
+    ports:
+      - "9001:9000"
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: minio123
+    command: server /data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  s3-init:
+    image: quay.io/minio/mc:latest
+    depends_on:
+      s3:
+        condition: service_healthy
+    entrypoint: []
+    command: sh -c "mc config host add local http://s3:9000 admin minio123 && mc mb local/ical"
+
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  e2e-preview:
+    build:
+      dockerfile: Dockerfile.web
+    environment:
+      - TARGET_ORIGIN=http://preview:8080
+    depends_on:
+      s3:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      preview:
+        condition: service_started
+    command: pnpm run e2e
+
+  e2e-dev:
+    build:
+      dockerfile: Dockerfile.web
+    environment:
+      - TARGET_ORIGIN=http://web:9000
+    depends_on:
+      web:
+        condition: service_healthy
+      server:
+        condition: service_healthy
+      s3:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    command: pnpm run e2e

@@ -1,0 +1,84 @@
+version: "3"
+
+tasks:
+  default:
+    aliases:
+      - dev
+    deps:
+      - front:dev
+      - server:dev
+      - up
+
+  preview:
+    deps:
+      - front:build
+      - server:build
+      - up
+    cmds:
+      - ./target/debug/server
+
+  front:dev:
+    env:
+      FARM_BACKEND_ORIGIN: http://localhost:8080
+    cmds:
+      - pnpm run dev
+
+  front:build:
+    cmds:
+      - pnpm run build
+
+  up:
+    cmds:
+      - docker compose up -d postgres s3
+      - docker compose up s3-init
+
+  server:dev:
+    deps:
+      - up
+    cmds:
+      - cargo run --bin server
+
+  server:build:
+    cmds:
+      - cargo build
+
+  e2e:
+    cmds:
+      - task e2e:dev
+      - task e2e:preview
+
+  e2e:preview:
+    cmds:
+      - docker compose down
+      - task: up
+      - docker compose up -d --build preview
+      - while ! curl -s http://localhost:8080/api/health; do sleep 1; done
+      - docker compose up e2e-preview
+      - docker compose run --rm server cargo run --bin crawl
+      - mc config host add local http://localhost:9001 admin minio123
+      - mc ls local/ical
+      - docker compose down
+
+  e2e:dev:
+    cmds:
+      - docker compose down
+      - task: up
+      - docker compose up -d --build server web
+      - docker compose up e2e-dev
+      - docker compose run --rm server cargo run --bin crawl
+      - mc config host add local http://localhost:9001 admin minio123
+      - mc ls local/ical
+      - docker compose down
+
+  lint:
+    cmds:
+      - pnpm run check:write
+      - cargo sort
+      - cargo clippy --fix --allow-dirty --allow-staged --all-targets --all-features --allow-no-vcs
+      - cargo fmt --all
+
+  sqlx:
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+    cmds:
+      - cargo sqlx prepare

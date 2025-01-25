@@ -1,0 +1,31 @@
+{
+  "name": "football-ical",
+  "version": "1.0.0",
+  "scripts": {
+    "check": "biome check ./page",
+    "check:write": "biome check --write --unsafe ./page",
+    "e2e": "playwright test",
+    "dev": "farm start",
+    "start": "farm start",
+    "build": "farm build",
+    "preview": "farm preview",
+    "clean": "farm clean"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "swr": "^2.3.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@farmfe/cli": "^1.0.4",
+    "@farmfe/core": "^1.6.6",
+    "@farmfe/plugin-react": "^1.2.6",
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "core-js": "^3.40.0",
+    "react-refresh": "^0.16.0"
+  }
+}
