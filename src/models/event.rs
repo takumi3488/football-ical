@@ -33,8 +33,8 @@ SUMMARY:{}
 DESCRIPTION:{}
 END:VEVENT
 "#,
-            self.start_at.format("%Y%m%dT%H%M%SZ"),
-            (self.start_at + chrono::Duration::hours(2)).format("%Y%m%dT%H%M%SZ"),
+            self.start_at.format("%Y%m%dT%H%M%S"),
+            (self.start_at + chrono::Duration::hours(2)).format("%Y%m%dT%H%M%S"),
             self.summary,
             self.location
                 .as_ref()
