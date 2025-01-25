@@ -36,14 +36,14 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    - name: Build and push (crawl)
+    - name: Build and push (crawler)
       uses: docker/build-push-action@v5
       with:
         context: .
         push: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crawl:${{ github.sha }}
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crawler:${{ github.sha }}
         labels: ${{ steps.meta.outputs.labels }}
-        target: crawl
+        target: crawler
 
     - name: Build and push (server)
       uses: docker/build-push-action@v5
