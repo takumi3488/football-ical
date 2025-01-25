@@ -1,6 +1,6 @@
 use std::{collections::HashSet, env};
 
-use aws_config::BehaviorVersion;
+use aws_config::{BehaviorVersion, Region};
 use aws_sdk_s3::{config::Builder, primitives::ByteStream};
 use football_ical::{models::team::Team, services::crawler::crawl};
 
@@ -12,9 +12,10 @@ async fn main() {
     let pool = sqlx::PgPool::connect(&database_url).await.unwrap();
     let s3_endpoint =
         env::var("S3_ENDPOINT").unwrap_or_else(|_| "http://localhost:9001".to_string());
+    let s3_region = env::var("S3_REGION").unwrap_or_else(|_| "ap-northeast-1".to_string());
     let config_loader = aws_config::defaults(BehaviorVersion::latest())
         .endpoint_url(&s3_endpoint)
-        .region("ap-northeast-1");
+        .region(Region::new(s3_region));
     let config = config_loader.load().await;
     let config = Builder::from(&config).force_path_style(true).build();
     let s3_client = aws_sdk_s3::Client::from_conf(config);
