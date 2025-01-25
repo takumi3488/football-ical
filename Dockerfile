@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 COPY . .
 RUN cargo build --release
 
-FROM gabrieldav/ninja-build AS crawler
+FROM gcc.io/distroless/cc-debian12 AS crawler
 WORKDIR /app
 COPY --from=rust /usr/src/app/target/release/crawl /app/crawl
 ENTRYPOINT ["/app/crawl"]
