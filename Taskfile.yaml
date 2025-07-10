@@ -55,7 +55,7 @@ tasks:
       - while ! curl -s http://localhost:8080/api/health; do sleep 1; done
       - docker compose up e2e-preview
       - docker compose run --rm server cargo run --bin crawl
-      - mc config host add local http://localhost:9001 admin minio123
+      - mc alias set local http://localhost:9001 admin minio123
       - mc ls local/ical
       - docker compose down
 
@@ -66,7 +66,7 @@ tasks:
       - docker compose up -d --build server web
       - docker compose up e2e-dev
       - docker compose run --rm server cargo run --bin crawl
-      - mc config host add local http://localhost:9001 admin minio123
+      - mc alias set local http://localhost:9001 admin minio123
       - mc ls local/ical
       - docker compose down
 

@@ -62,7 +62,7 @@ services:
       s3:
         condition: service_healthy
     entrypoint: []
-    command: sh -c "mc config host add local http://s3:9000 admin minio123 && mc mb local/ical"
+    command: sh -c "mc alias set local http://s3:9000 admin minio123 && mc mb local/ical"
 
   postgres:
     image: postgres:alpine
