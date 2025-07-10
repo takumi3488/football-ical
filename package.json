@@ -12,20 +12,20 @@
     "clean": "farm clean"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "swr": "^2.3.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "swr": "^2.3.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@farmfe/cli": "^1.0.4",
-    "@farmfe/core": "^1.6.6",
+    "@biomejs/biome": "^2.1.1",
+    "@farmfe/cli": "^1.0.5",
+    "@farmfe/core": "^1.7.9",
     "@farmfe/plugin-react": "^1.2.6",
-    "@playwright/test": "^1.49.1",
-    "@types/node": "^22.10.7",
-    "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3",
-    "core-js": "^3.40.0",
-    "react-refresh": "^0.16.0"
+    "@playwright/test": "^1.54.0",
+    "@types/node": "^24.0.12",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "core-js": "^3.44.0",
+    "react-refresh": "^0.17.0"
   }
 }
