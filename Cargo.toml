@@ -16,7 +16,7 @@ reqwest = { version = "0.12.12", default-features = false, features = [
     "gzip",
 ] }
 scraper = "0.23.1"
-serde = { version = "1.0.202", features = ["derive"] }
+serde = { version = "1.0.219", features = ["derive"] }
 sqlx = { version = "0.8.3", features = [
     "chrono",
     "json",
