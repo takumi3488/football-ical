@@ -1,4 +1,4 @@
-FROM node:20-slim AS web
+FROM node:24-slim AS web
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 WORKDIR /app
