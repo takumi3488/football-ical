@@ -15,6 +15,7 @@ jobs:
     - uses: ./.github/actions/test
 
   build-and-release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
