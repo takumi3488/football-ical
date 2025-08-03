@@ -8,12 +8,12 @@ runs:
 
     - name: Run cargo check
       shell: bash
-      run: cargo check --all-features
+      run: SQLX_OFFLINE=true cargo check --all-features
       
     - name: Run clippy
       shell: bash
-      run: cargo clippy --all-features -- -D warnings
+      run: SQLX_OFFLINE=true cargo clippy --all-features -- -D warnings
       
     - name: Check formatting
       shell: bash
-      run: cargo fmt -- --check
+      run: SQLX_OFFLINE=true cargo fmt -- --check
