@@ -38,10 +38,7 @@ END:VEVENT
             self.summary,
             self.location
                 .as_ref()
-                .map_or("".to_string(), |location| format!(
-                    "LOCATION:{}\n",
-                    location
-                )),
+                .map_or("".to_string(), |location| format!("LOCATION:{location}\n")),
             self.description
         )
     }

@@ -83,7 +83,7 @@ pub async fn to_schedule_url(url: &str) -> Result<String> {
         .captures(url)
         .ok_or_else(|| anyhow::anyhow!("Invalid URL"))?[1]
         .to_string();
-    let schedule_url = format!("{}/schedule", base_url);
+    let schedule_url = format!("{base_url}/schedule");
     Ok(schedule_url.to_string())
 }
 
