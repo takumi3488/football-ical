@@ -25,7 +25,13 @@ async fn main() {
     let mut events_list = HashSet::new();
     for team in teams {
         let document = team.get_document().await.unwrap();
-        let crawl_response = crawl(&document).await.unwrap();
+        let crawl_response = match crawl(&document).await {
+            Ok(response) => response,
+            Err(err) => {
+                eprintln!("Failed to crawl document for team {}: {}", team.url, err);
+                continue;
+            }
+        };
         events_list.extend(crawl_response.events);
     }
 
