@@ -15,7 +15,7 @@ pub async fn crawl(document: &str) -> Result<CrawlResponse> {
     let name = document
         .select(&scraper::Selector::parse(".sc-teamTitle__name").unwrap())
         .next()
-        .unwrap()
+        .ok_or(anyhow::anyhow!("Failed to find team name"))?
         .text()
         .collect::<String>();
 
