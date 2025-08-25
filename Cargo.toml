@@ -10,7 +10,7 @@ anyhow = "1.0.99"
 aws-config = { version = "1.5.15", features = ["behavior-version-latest"] }
 aws-sdk-s3 = "1.72.0"
 chrono = { version = "0.4.39", features = ["serde"] }
-regex = "1.11.1"
+regex = "1.11.2"
 reqwest = { version = "0.12.23", default-features = false, features = [
     "rustls-tls",
     "gzip",
